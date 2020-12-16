@@ -63,11 +63,9 @@ def users(
                 table.add_column(col, no_wrap=False)
 
             for user in track(users, description="Generating table..."):
-                console.print(user.__dict__.items())
                 values = []
                 for col in cols:
                     values.append(user.__dict__.get(col))
-                console.print(values)
                 table.add_row(*values)
 
             with console.status(
