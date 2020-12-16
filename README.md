@@ -1,12 +1,14 @@
 <div align="center">
-    <img src="docs/images/AzDummy.png" width="400px" height="400px"/>
+    <img src="https://github.com/daddycocoaman/AzDummy/raw/main/docs/images/AzDummy.png" width="400px" height="400px"/>
 </div>
 
-![PyPI](https://img.shields.io/pypi/v/azdummy?style=plastic)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/azdummy?style=plastic)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/azdummy?style=plastic)
-![PyPI - License](https://img.shields.io/pypi/l/azdummy?style=plastic)
-[![Twitter Follow](https://img.shields.io/twitter/follow/mcohmi.svg?style=social)](https://twitter.com/mcohmi)
+<div align="center">
+    <img src="https://img.shields.io/pypi/v/azdummy"/>
+    <img src="https://img.shields.io/pypi/pyversions/azdummy"/>
+    <img src="https://img.shields.io/pypi/l/azdummy"/>
+    <a href="https://twitter.com/mcohmi"><img src="https://img.shields.io/twitter/follow/mcohmi.svg?style=plastic"/></a>
+</div>
+
 # AzDummy
 A Python [Typer-based](https://github.com/tiangolo/typer) CLI tool to generate fake data for Azure AD. AzDummy also uses [Rich](https://github.com/willmcgugan/rich) for some dope console output.
 

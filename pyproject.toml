@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "azdummy"
-version = "0.0.0"
+version = "1.0.0"
 description = "A Python Typer-based CLI tool to generate fake data for Azure AD."
-authors = ["Leron Gray <daddycocoaman@gmail.com>"]
+authors = ["Leron Gray"]
 license = "MIT"
 readme = "README.md"
+homepage = "https://github.com/daddycocoaman/AzDummy"
 
 [tool.poetry.dependencies]
 python = "^3.8"
