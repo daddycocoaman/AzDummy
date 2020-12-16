@@ -33,7 +33,7 @@ On first run, user will be prompted to create a config file. Location of this co
 
 Currently used variables:
 
-- **AZD_LOCALE**: (str) Two-letter shortcode for supported locales
+- **AZD_LOCALE**: (str) Shortcode for supported locales
 - **AZD_TENANT_FQDN**: (str) One of the domains in the tenant (Usually `<domain>.onmicrosoft.com` format)
 - **AZD_NUM_USERS**: (int) Number of users to generate  
 - **AZD_BLOCK_LOGIN**: (bool) Block generated users from logging in
