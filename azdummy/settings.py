@@ -1,6 +1,5 @@
 from enum import Enum
 
-from dotenv import set_key
 from pydantic import BaseSettings, SecretBytes, validator
 
 
@@ -68,6 +67,3 @@ class AzDummySettings(BaseSettings):
             raise ValueError(
                 "AZD_NUM_GLOBAL_ADMIN number set higher than AZD_NUM_USERS"
             )
-
-    def set_key(self):
-        return self.fields

@@ -1,7 +1,7 @@
 import time
-from pathlib import Path
 
 import typer
+from importlib_metadata import version
 from rich.panel import Panel
 
 from azdummy import console, state
@@ -22,9 +22,18 @@ def command_finish(*args, **kwargs):
         )
 
 
+def version_callback(value: bool):
+    if value:
+        typer.echo(f"AzDummy: {version('azdummy')}")
+        raise typer.Exit()
+
+
 @app.callback(result_callback=command_finish)
 def main(
     verbose: bool = typer.Option(False, "--verbose", "-v"),
+    version: bool = typer.Option(
+        False, "--version", callback=version_callback, is_eager=True
+    ),
     timer: bool = typer.Option(
         False, "--timer", help="Print execution time after output"
     ),

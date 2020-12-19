@@ -1,12 +1,8 @@
-from pathlib import Path
-
 import typer
 from dotenv import set_key
 from pydantic import SecretBytes
 from rich.panel import Panel
 from rich.prompt import Confirm
-from rich.rule import Rule
-from rich.table import Table
 
 from azdummy import config_path, console, reset_config, settings, state
 from azdummy.core.typer import AZDTyper

@@ -23,6 +23,7 @@ mkdocs = "^1.1.2"
 mkdocs-click = "^0.2.0"
 mkdocs-material = "^6.1.7"
 typer-cli = "^0.0.11"
+autoflake = "^1.4"
 
 [tool.poetry.scripts]
 azdummy = "azdummy.main:app"

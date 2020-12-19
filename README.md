@@ -84,4 +84,4 @@ Commands are available [here](docs/commands.md). You can generally use `--help/-
 
 ## What do I do with the output?
 
-The default output provides two files: `output_create.csv` and `output_create.csv`. These files can be used with the Bulk Create and Bulk Delete options in Azure Portal in the Azure AD Users menu. 
+The default output provides two files for user: `output_create.csv` and `output_create.csv`. These files can be used with the Bulk Create and Bulk Delete options in Azure Portal in the Azure AD Users menu. Additionally, one file is created for each defined group with the members of those groups. These files can be used with the Import Members and Remove Members options in Azure Portal in the Azure AD Group menu.
