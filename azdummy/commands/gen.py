@@ -9,7 +9,7 @@ from rich.table import Table
 
 from azdummy import console, settings, state
 
-from ..provider import generic
+from azdummy.provider import generic
 
 app = typer.Typer()
 
