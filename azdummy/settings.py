@@ -1,4 +1,5 @@
 from enum import Enum
+
 from dotenv import set_key
 from pydantic import BaseSettings, SecretBytes, validator
 

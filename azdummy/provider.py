@@ -7,6 +7,7 @@ from mimesis.providers.base import BaseProvider
 from rich.progress import track
 
 from azdummy import settings
+from azdummy.styles import AZURE_BOLD
 
 person = Person("en")
 address = Address(settings.AZD_LOCALE)
@@ -75,7 +76,7 @@ class AzureADProvider(BaseProvider):
 
         users = []
         existingNames = set()
-        for _ in track(range(number), description="Generating users..."):
+        for _ in track(range(number), description=f"[{AZURE_BOLD}]Generating users..."):
             while True:
                 user = AzUser(domain, blockSignIn=block_login)
                 if user.name not in existingNames:

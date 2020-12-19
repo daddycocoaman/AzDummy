@@ -129,5 +129,4 @@ dmypy.json
 .pyre/
 
 
-output_create.csv
-output_delete.csv
+output_*.csv

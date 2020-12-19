@@ -3,13 +3,15 @@ from dataclasses import fields
 from enum import Enum
 
 import typer
+from rich import box
+from rich.columns import Columns
 from rich.panel import Panel
 from rich.progress import track
 from rich.table import Table
 
-from azdummy import console, settings, state
-
+from azdummy import console, settings
 from azdummy.provider import generic
+from azdummy.styles import *
 
 app = typer.Typer()
 
@@ -53,28 +55,51 @@ def users(
     Console output generates the users and outputs them to the console. Does
     not create the CSV files.
     """
+
+    groups = {group: [] for group in settings.AZD_GROUP_NAMES}
+
     if format.value in [OutputFormat.CONSOLE, OutputFormat.CSV]:
         users = generic.AzureADProvider.AzUsers(tenant, count, block_login)
 
         if format.value == OutputFormat.CONSOLE:
-            table = Table(title=" ", header_style="bold green")
+            table = Table(
+                title=" ",
+                header_style=WHITE_BOLD,
+                style=AZURE,
+                box=box.MINIMAL_HEAVY_HEAD,
+            )
+
             cols = [c.name for c in filter(lambda x: x.repr == True, fields(users[0]))]
             for col in cols:
                 table.add_column(col, no_wrap=False)
 
-            for user in track(users, description="Generating table..."):
+            for user in track(users, description=f"[{AZURE_BOLD}]Generating table..."):
                 values = []
                 for col in cols:
                     values.append(user.__dict__.get(col))
                 table.add_row(*values)
+                groups[user.department].append(user.userPrincipalName)
 
             with console.status(
-                f"[bold green] Generating output for {count} users. Please be patient for large datasets.\n",
+                f"[cyan]Generating output for {count} users. Please be patient for large datasets.\n",
                 spinner="runner",
             ) as status:
                 console.print(table)
+
+            render_groups = [
+                Panel(
+                    "\n".join(members),
+                    title=f"[{WHITE_BOLD}]{group}",
+                    expand=True,
+                    border_style=AZURE_BOLD,
+                )
+                for group, members in groups.items()
+                if members
+            ]
+            console.print(Columns(render_groups))
         elif format.value == OutputFormat.CSV:
 
+            # Create user create/delete CSV files
             user_headers = [
                 "User name [userPrincipalName] *",
                 "Name [displayName] *",
@@ -123,9 +148,45 @@ def users(
                             createwriter.writerow(user.to_list())
                             deletewriter.writerow([user.userPrincipalName])
 
+                            groups[user.department].append(user.userPrincipalName)
+
                     console.print(
                         Panel.fit(
-                            f":white_heavy_check_mark: Generated {count} users. Output files: [bold yellow] {createfile.name}, {deletefile.name}",
-                            style="bold green",
+                            f":white_heavy_check_mark: Generated {count} users. Output files: [white] \[{createfile.name}, {deletefile.name}]",
+                            style=AZURE_BOLD,
                         )
                     )
+
+            with console.status(
+                f"[bold green]Generating group files. Please be patient for large datasets.\n",
+                spinner="hamburger",
+            ) as status:
+                for group, members in groups.items():
+                    if members:
+                        with open(
+                            f"{output_file.name}_{group.replace(' ', '_')}.csv",
+                            "w",
+                            newline="",
+                            encoding="utf-8",
+                        ) as groupfile:
+                            groupwriter = csv.writer(groupfile)
+                            groupwriter.writerow(["version:v1.0"])
+                            groupwriter.writerow(
+                                [
+                                    "Member object ID or user principal name [memberObjectIdOrUpn] Required"
+                                ]
+                            )
+                            groupwriter.writerows([[member] for member in members])
+
+                group_filelist = ", ".join(
+                    [
+                        f"{output_file.name}_{group.replace(' ', '_')}.csv"
+                        for group in groups
+                    ]
+                )
+                console.print(
+                    Panel.fit(
+                        f":white_heavy_check_mark: Generated group files. Output files: \n[white] \[{group_filelist}]",
+                        style=AZURE_BOLD,
+                    )
+                )
