@@ -5,7 +5,7 @@ from typing import List
 from mimesis import Address, Generic, Person
 from mimesis.providers.base import BaseProvider
 from rich.progress import track
-
+from rich import markup
 from azdummy import settings
 from azdummy.styles import AZURE_BOLD
 
@@ -44,7 +44,7 @@ class AzUser:
 
         self.givenName, self.surname = self.name.split()
         self.userPrincipalName = f"{self.givenName}.{self.surname}@{self.domain}"
-        self.passwordProfile = person.password(length=20)
+        self.passwordProfile = markup.escape(person.password(length=20))
         self.department = random.choice(settings.AZD_GROUP_NAMES)
         self.streetAddress = f"{address.street_number()} {address.street_name()} {address.street_suffix()}"
         self.state = address.state(True)
