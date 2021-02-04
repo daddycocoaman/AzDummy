@@ -1,7 +1,7 @@
 import time
 
 import typer
-from importlib_metadata import version
+from importlib.metadata import version
 from rich.panel import Panel
 
 from azdummy import console, state
