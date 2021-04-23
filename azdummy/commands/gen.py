@@ -10,6 +10,7 @@ from rich.table import Table
 
 from azdummy import console, settings
 from azdummy.provider import generic
+
 from ..core.styles import *
 
 app = typer.Typer()

@@ -1,17 +1,14 @@
 import random
 from typing import List
+
 from mimesis.schema import Field, Schema
 from mimesis.typing import JSON
-from rich.progress import (
-    Progress,
-    SpinnerColumn,
-    TextColumn,
-    BarColumn,
-    TimeElapsedColumn,
-)
-from ..settings import AZDSettings
+from rich.progress import (BarColumn, Progress, SpinnerColumn, TextColumn,
+                           TimeElapsedColumn)
+
 from .. import console
 from ..core.styles import *
+from ..settings import AZDSettings
 
 
 class Users:

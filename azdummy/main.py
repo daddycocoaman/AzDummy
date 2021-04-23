@@ -1,14 +1,16 @@
 import shutil
 from pathlib import Path
-from rich.prompt import Confirm
+
 import rtoml
 import typer
+from rich import inspect
+from rich.prompt import Confirm
 
 from . import console
-from .core.typer import AZDTyper
-from .settings import AZDSettings
-from .generators.csv import CSVGenerator
 from .core.styles import AZURE_BOLD
+from .core.typer import AZDTyper
+from .generators.csv import CSVGenerator
+from .settings import AZDSettings
 
 app = AZDTyper(name="azdummy")
 
@@ -37,6 +39,10 @@ def new(
     console.print(f":white_heavy_check_mark:[{AZURE_BOLD}] {file} created!")
 
 
+# generator = CSVGenerator(settings, output_dir, file_prefix)
+# generator.write()
+
+
 @app.command(help="Generate fake data for CSV upload")
 def csv(
     config_file: Path = typer.Argument(
@@ -60,9 +66,23 @@ def csv(
     ),
 ):
     config = rtoml.load(config_file)
-    settings = AZDSettings.parse_obj(config)
-    generator = CSVGenerator(settings, output_dir, file_prefix)
-    generator.write()
+    console.print(config)
+
+    try:
+        settings = AZDSettings.parse_obj(config)
+    except Exception as e:
+        console.print("\n", e, "\n")
+        raise typer.Exit(-1)
+
+    inspect(settings)
+
+
+@app.callback()
+def _main(debug: bool = typer.Option(False, help="Show debug info")):
+    if debug:
+        from rich import traceback
+
+        traceback.install(show_locals=True)
 
 
 if __name__ == "__main__":

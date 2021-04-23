@@ -3,10 +3,10 @@ from pathlib import Path
 
 from rich.panel import Panel
 
-from .models import Users
 from .. import console
-from ..settings import AZDSettings
 from ..core.styles import *
+from ..settings import AZDSettings
+from .models import Users
 
 
 class CSVGenerator:
