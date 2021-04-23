@@ -1,0 +1,42 @@
+from enum import Enum
+
+
+class AuthTypeEnum(str, Enum):
+    AZCLI = "azcli"
+
+
+class LocaleEnum(str, Enum):
+    CZECH = "cs"
+    DANISH = "da"
+    GERMAN = "de"
+    AUSTRIAN_GERMAN = "de-at"
+    SWISS_GERMAN = "de-ch"
+    GREEK = "el"
+    ENGLISH = "en"
+    AUSTRALIAN_ENGLISH = "en-au"
+    CANADIAN_ENGLISH = "en-ca"
+    BRITISH_ENGLISH = "en-gb"
+    SPANISH = "es"
+    MEXICAN_SPANISH = "es-mx"
+    ESTONIAN = "et"
+    FARSI = "fa"
+    FINNISH = "fi"
+    FRENCH = "fr"
+    HUNGARIAN = "hu"
+    ICELANDIC = "is"
+    ITALIAN = "it"
+    JAPANESE = "ja"
+    KAZAKH = "kk"
+    KOREAN = "ko"
+    DUTCH = "nl"
+    BELGIUM_DUTCH = "nl-be"
+    NORWEGIAN = "no"
+    POLISH = "pl"
+    PORTUGUESE = "pt"
+    BRAZILIAN_PORTUGUESE = "pt-br"
+    RUSSIAN = "ru"
+    SLOVAK = "sk"
+    SWEDISH = "sv"
+    TURKISH = "tr"
+    UKRAINIAN = "uk"
+    CHINESE = "zh"

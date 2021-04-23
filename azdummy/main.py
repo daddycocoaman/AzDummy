@@ -1,48 +1,68 @@
-import time
-
+import shutil
+from pathlib import Path
+from rich.prompt import Confirm
+import rtoml
 import typer
-from importlib.metadata import version
-from rich.panel import Panel
 
-from azdummy import console, state
-from azdummy.commands import config, gen
-from azdummy.core.typer import AZDTyper
+from . import console
+from .core.typer import AZDTyper
+from .settings import AZDSettings
+from .generators.csv import CSVGenerator
+from .core.styles import AZURE_BOLD
 
 app = AZDTyper(name="azdummy")
-app.add_typer(config.app, name="config", help="Show or edit configuration data")
-app.add_typer(gen.app, name="gen", help="Generate fake data for specified type")
 
 
-def command_finish(*args, **kwargs):
-    if state["timeStart"]:
-        elapsedTime = time.time() - state["timeStart"]
-        console.print(
-            Panel.fit(f":stopwatch:  Execution time: [bold yellow]{elapsedTime}"),
-            style="bold green",
-        )
+@app.command(help="Generate a new config template")
+def new(
+    file: Path = typer.Argument(
+        "azd_settings.toml",
+        dir_okay=False,
+        file_okay=True,
+        writable=True,
+        resolve_path=True,
+        help="Filename output",
+    )
+):
+    if file.exists():
+        if Confirm.ask(
+            f":warning: [{AZURE_BOLD}]{file}[/{AZURE_BOLD}] exists. Do you want to overwrite?"
+        ):
+            shutil.copyfile(Path(__file__).parent / "settings.toml", file)
+        else:
+            exit(-1)
+    else:
+        shutil.copyfile(Path(__file__).parent / "settings.toml", file)
+
+    console.print(f":white_heavy_check_mark:[{AZURE_BOLD}] {file} created!")
 
 
-def version_callback(value: bool):
-    if value:
-        typer.echo(f"AzDummy: {version('azdummy')}")
-        raise typer.Exit()
-
-
-@app.callback(result_callback=command_finish)
-def main(
-    verbose: bool = typer.Option(False, "--verbose", "-v"),
-    version: bool = typer.Option(
-        False, "--version", callback=version_callback, is_eager=True
+@app.command(help="Generate fake data for CSV upload")
+def csv(
+    config_file: Path = typer.Argument(
+        ..., exists=True, dir_okay=False, resolve_path=True, help="Configuration file"
     ),
-    timer: bool = typer.Option(
-        False, "--timer", help="Print execution time after output"
+    output_dir: Path = typer.Option(
+        ".",
+        "-o",
+        "--output-dir",
+        dir_okay=True,
+        file_okay=False,
+        exists=True,
+        writable=True,
+        help="Filename prefix for output",
+    ),
+    file_prefix: str = typer.Option(
+        "azdummy_output",
+        "-f",
+        "--file-prefix",
+        help="Filename prefix for output",
     ),
 ):
-    if verbose:
-        state["verbose"] = True
-    if timer:
-        state["timeStart"] = time.time()
-    print()
+    config = rtoml.load(config_file)
+    settings = AZDSettings.parse_obj(config)
+    generator = CSVGenerator(settings, output_dir, file_prefix)
+    generator.write()
 
 
 if __name__ == "__main__":

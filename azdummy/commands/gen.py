@@ -1,6 +1,5 @@
 import csv
 from dataclasses import fields
-from enum import Enum
 
 import typer
 from rich import box
@@ -11,14 +10,9 @@ from rich.table import Table
 
 from azdummy import console, settings
 from azdummy.provider import generic
-from azdummy.styles import *
+from ..core.styles import *
 
 app = typer.Typer()
-
-
-class OutputFormat(str, Enum):
-    CONSOLE = "console"
-    CSV = "csv"
 
 
 @app.command()

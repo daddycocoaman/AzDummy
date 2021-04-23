@@ -1,0 +1,20 @@
+tenant = "azdummy.onmicrosoft.com"
+locale = "en"
+num_users = 500
+authtype = "azcli"
+block_login = "True"
+force_password_change = "False"
+
+[groups]
+names = [
+    "IT",
+    "Marketing",
+    "Accounting",
+    "Sales",
+    "Human Resources",
+    "Customer Service",
+    "Development",
+    "Supply",
+    "Production",
+    "Legal",
+]
