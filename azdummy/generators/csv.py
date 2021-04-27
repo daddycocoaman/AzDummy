@@ -40,6 +40,7 @@ class CSVGenerator:
 
     def write(self):
         count = len(self.users)
+
         groups = {group: [] for group in self.settings.groups.names}
 
         with open(

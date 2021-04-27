@@ -3,7 +3,6 @@ from pathlib import Path
 
 import rtoml
 import typer
-from rich import inspect
 from rich.prompt import Confirm
 
 from . import console
@@ -39,10 +38,6 @@ def new(
     console.print(f":white_heavy_check_mark:[{AZURE_BOLD}] {file} created!")
 
 
-# generator = CSVGenerator(settings, output_dir, file_prefix)
-# generator.write()
-
-
 @app.command(help="Generate fake data for CSV upload")
 def csv(
     config_file: Path = typer.Argument(
@@ -74,7 +69,8 @@ def csv(
         console.print("\n", e, "\n")
         raise typer.Exit(-1)
 
-    inspect(settings)
+    generator = CSVGenerator(settings, output_dir, file_prefix)
+    generator.write()
 
 
 @app.callback()

@@ -23,5 +23,4 @@ names = [
 max = 3
 
 [groups.config.Customer_Service]
-min = 2
 underscore_space = "True"

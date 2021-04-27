@@ -1,29 +1,29 @@
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, ValidationError, conint, validator
+from pydantic import BaseModel, conint, validator, Field
 
 from .enums import AuthTypeEnum, LocaleEnum
 
 
-class GroupConfig(BaseModel):
-    """Configuration parameters for a group"""
-
-    min: Optional[int]
-    max: Optional[int]
-    underscore_space: Optional[bool]
-
+class StrictModel(BaseModel):
     class Config:
         extra = "forbid"
 
 
-class GroupSettings(BaseModel):
+class GroupConfig(StrictModel):
+    """Configuration parameters for a group"""
+
+    max: Optional[int] = Field(description="Maximum amount of users for group")
+    underscore_space: Optional[bool] = Field(
+        description="Underscore in group name in config should be interpreted as a space"
+    )
+
+
+class GroupSettings(StrictModel):
     """GroupSettings for provided TOML file"""
 
     names: List[str]
     config: Optional[Dict[str, GroupConfig]]
-
-    class Config:
-        extra = "forbid"
 
     @validator("config")
     def validate_groups(cls, value: dict, values):
@@ -37,7 +37,7 @@ class GroupSettings(BaseModel):
         return corrected_dict
 
 
-class AZDSettings(BaseModel):
+class AZDSettings(StrictModel):
     """Settings model generated from provided TOML file"""
 
     tenant: str
@@ -47,6 +47,3 @@ class AZDSettings(BaseModel):
     num_users: conint(le=50000)
     force_password_change: bool
     groups: GroupSettings
-
-    class Config:
-        extra = "forbid"
